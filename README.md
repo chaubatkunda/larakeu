@@ -1,4 +1,4 @@
-#Lara'keu
+# Lara'keu
 
 #### requires
 
@@ -30,7 +30,7 @@ php artisan optimize
 php artisan db:seed
 ```
 
-###Plugin
+### Plugin
 
 | Plugin                   | Readme                                              |
 | ------------------------ | --------------------------------------------------- |
