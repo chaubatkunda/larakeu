@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\{Expenditure, Income, User};
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -15,18 +16,24 @@ class DashboardController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $members = User::with(['incomes'])->get();
-        $dataPoints = [];
-        foreach ($members as $member) {
-            $income = $member->incomes->sum('price');
-            $dataPoints[] = array(
-                "name"  => $member['name'],
-                intval($income),
-            );
-        }
+        $memeberMo = User::where("created_at", ">", Carbon::now()->subMonths())->get();
+        $startMonthInc = Income::where("created_at", ">", Carbon::now()->subMonths())->get();
+        $startMonthEx = Expenditure::where("created_at", ">", Carbon::now()->subMonths())->get();
+        $income = $startMonthInc->sum('price');
+        $balance = $income - $startMonthEx->sum('price');
+        $rugi = $income + $startMonthEx->sum('price');
+        $dataPoints = [
+            intval($income),
+            intval($balance),
+            intval($income - $rugi)
+        ];
+
         return view('dashboard', [
+            'balance'   => $balance,
+            'profit'    => $income,
+            'rugi'      => $rugi,
             'data'  => json_encode($dataPoints),
-            'terms' => json_encode([
+            'laps' => json_encode([
                 'Profit',
                 'Balance',
                 'Rugi'

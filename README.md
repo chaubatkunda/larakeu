@@ -1,6 +1,6 @@
 # Lara'keu
 
-#### requires
+#### require php
 
 php 8.0
 
@@ -26,9 +26,13 @@ setelah itu ketikkan pada terminal perintah di bawah ini.
 ```sh
 php artisan migrate
 php artisan key:generate
-php artisan optimize
 php artisan db:seed
 ```
+
+###### Admin Login
+
+Email: `admin@example.com`
+Password : `password`
 
 ### Plugin
 
@@ -36,3 +40,4 @@ php artisan db:seed
 | ------------------------ | --------------------------------------------------- |
 | Laravel Yajra Datatables | https://yajrabox.com/docs/laravel-datatables/master |
 | Laravel sweet-alert      | https://realrashid.github.io/sweet-alert/           |
+| Laravel MPDF             | https://github.com/mccarlosen/laravel-mpdf          |

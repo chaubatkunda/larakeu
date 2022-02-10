@@ -33,6 +33,9 @@
                                 </td>
                             </tr>
                         </table>
+                        <a href="{{ route('member.index') }}" class="btn btn-danger border-0 bg-gradient">
+                            <span data-feather="arrow-left-circle"></span>Kembali
+                        </a>
                     </div>
                 </div>
             </div>
@@ -48,7 +51,6 @@
     @push('after-script')
         <script>
             /* globals Chart:false, feather:false */
-
             (function() {
                 'use strict'
                 // Graphs
@@ -58,7 +60,7 @@
                     data: {
                         labels: <?= $terms ?>,
                         datasets: [{
-                            data: {{ $data }},
+                            data: <?= $data ?>,
                             lineTension: 0,
                             backgroundColor: 'transparent',
                             borderColor: '#007bff',

@@ -3,50 +3,109 @@
         <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Dashboard</h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-                <div class="btn-group me-2">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+        </div>
+
+        <div class="row">
+            @can('admin')
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-0 shadow-sm bg-primary text-white">
+                                <div class="card-body" data-bs-toggle="tooltip"
+                                    title="Laporan Profit setiap bulan berjalan">
+                                    <div class="card-caption">
+                                        <strong>Profit</strong>
+                                    </div>
+                                    <div class="card-text">
+                                        {{ rupiah($profit) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-0 shadow-sm bg-info text-white">
+                                <div class="card-body" data-bs-toggle="tooltip"
+                                    title="Laporan Balance setiap bulan berjalan">
+                                    <div class="card-caption">
+                                        <strong>Balance</strong>
+                                    </div>
+                                    <div class="card-text">
+                                        {{ rupiah($balance) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm bg-danger text-white">
+                                <div class="card-body" data-bs-toggle="tooltip"
+                                    title="Laporan Rugi setiap bulan berjalan">
+                                    <div class="card-caption">
+                                        <strong>Rugi</strong>
+                                    </div>
+                                    <div class="card-text">
+                                        {{ rupiah($rugi) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                    <span data-feather="calendar"></span>
-                    This week
-                </button>
-            </div>
+                <div class="col-md-6 mb-3">
+                    <figure class="figure">
+                        <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+                        <figcaption class="figure-caption">Grafik Keuangan Bulan Berjalan</figcaption>
+                    </figure>
+                </div>
+            @endcan
+            @if (auth()->user()->role == 'MEMBER')
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm bg-primary text-white">
+                        <div class="card-body">
+                            <div class="card-caption">
+                                <strong>Profit</strong>
+                            </div>
+                            <div class="card-text">
+                                {{ rupiah(Auth::user()->incomes->sum('price')) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm bg-info text-white">
+                        <div class="card-body">
+                            <div class="card-caption">
+                                <strong>Balance</strong>
+                            </div>
+                            <div class="card-text">
+                                {{ rupiah($rg = Auth::user()->incomes->sum('price') - Auth::user()->expendirures->sum('price')) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm bg-danger text-white">
+                        <div class="card-body">
+                            <div class="card-caption">
+                                <strong>Rugi</strong>
+                            </div>
+                            <div class="card-text">
+                                {{ rupiah(Auth::user()->incomes->sum('price') - $rg) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
+        <hr>
 
-        <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-
-        <h2>Section title</h2>
-        <div class="table-responsive">
-            <table class="table table-striped table-sm" id="datatable">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Header</th>
-                        <th scope="col">Header</th>
-                        <th scope="col">Header</th>
-                        <th scope="col">Header</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1,001</td>
-                        <td>random</td>
-                        <td>data</td>
-                        <td>placeholder</td>
-                        <td>text</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
     </main>
 
     @push('after-script')
         <script>
             /* globals Chart:false, feather:false */
 
-            (function() {
+            $(document).ready(function() {
+                $('[data-bs-toggle="tooltip"]').tooltip();
                 'use strict'
                 // Graphs
                 var ctx = document.getElementById('myChart')
@@ -54,25 +113,9 @@
                 var myChart = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: [
-                            'Sunday',
-                            'Monday',
-                            'Tuesday',
-                            'Wednesday',
-                            'Thursday',
-                            'Friday',
-                            'Saturday'
-                        ],
+                        labels: <?= $laps ?>,
                         datasets: [{
-                            data: [
-                                15339,
-                                21345,
-                                18483,
-                                24003,
-                                23489,
-                                24092,
-                                12034
-                            ],
+                            data: {{ $data }},
                             lineTension: 0,
                             backgroundColor: 'transparent',
                             borderColor: '#007bff',
@@ -93,7 +136,7 @@
                         }
                     }
                 })
-            })()
+            })
         </script>
     @endpush
 
