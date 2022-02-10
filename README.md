@@ -7,7 +7,7 @@ php 8.0
 Download atau clone project dari github:
 
 ```sh
-
+https://github.com/chaubatkunda/larakeu.git
 ```
 
 ```sh
