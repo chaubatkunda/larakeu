@@ -15,10 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // User::factory(100)->create();
-        $this->call([
-            IncomeSeeder::class,
-            // ExpenditureSeeder::class
-        ]);
+        User::factory(100)->create();
+        // $this->call([
+        //     IncomeSeeder::class,
+        //     ExpenditureSeeder::class
+        // ]);
     }
 }
