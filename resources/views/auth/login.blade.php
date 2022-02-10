@@ -25,7 +25,7 @@
             <div class="d-flex align-items-center justify-content-between mb-3">
                 <div>
                     <x-button class="ml-4">
-                        {{ __('Login') }}
+                        Login <span data-feather="log-in"></span>
                     </x-button>
                 </div>
                 <div>
